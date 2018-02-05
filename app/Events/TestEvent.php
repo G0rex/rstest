@@ -5,19 +5,20 @@ namespace App\Events;
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-
+use App\Message;
 class TestEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels;
     public $time;
+    public $message;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Message $message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -27,15 +28,10 @@ class TestEvent extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['service'];
+        return ['chat'];
     }
-    public function broadcastWith(){
-        return [
-            'time' => microtime(),
-            'version' => 0.1
-        ];
-    }
+
     public function broadcastAs (){
-        return 'microtime';
+        return 'message';
     }
 }
